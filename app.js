@@ -1,19 +1,26 @@
-const express = require('express');
-const port = 5050;
-const cors = require('cors');
+const express = require("express");
 const app = express();
+const bodyParser = require("body-parser");
 
-let corsOptions = {
-	origin: "*",
-	credential: true,
-};
+const cors = require("cors");
 
-app.use(cors(corsOptions));
+const indexRouter = require("./Router/indexRouter");
 
-app.get('/', (req, res) => {
-	res.send('Hello World!');
-});
+const getFoodRouter = require("./Router/getFood/getFoodRouter");
 
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
+
+app.use(bodyParser.json());
+app.use(indexRouter);
+
+app.use("/getFood", getFoodRouter);
+
+const port = 5050;
 app.listen(port, () => {
-	console.log(`server is running. http://localhost:${port}`);
+  console.log(`Listening at http://localhost:${port}`);
 });
